@@ -1,7 +1,9 @@
-const express=require('express')
+import express from 'express'
+import dotenv from 'dotenv'
 const app=express()
-const products=require('./data/products')
-
+import products from './data/products.js'
+import db from './config/mongoose.js'
+dotenv.config()
 
 app.get('/',function(req,res){
     return res.send("Api is running")
@@ -17,7 +19,7 @@ app.get('/api/product/:id',function(req,res){
 })
 
 
-const port=5000
+const port=process.env.PORT||5000
 app.listen(port,function(err){
     if(err){console.log("Error in running server")}
     console.log(`Server is running at port : ${port}`)
