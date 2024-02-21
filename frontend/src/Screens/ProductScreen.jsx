@@ -11,7 +11,7 @@ const ProductScreen = () => {
 
     useEffect(()=>{
       const findproduct=async ()=>{
-        const {data}=await axios.get(`/api/product/${id}`)
+        const {data}=await axios.get(`/api/products/${id}`)
         setProduct(data)
       }
       findproduct()
@@ -24,8 +24,7 @@ const ProductScreen = () => {
     <>
       <Link className='btn btn-primary my-3' to='/'>Go Back</Link>
       <Row>
-        <Col md={4
-        }>
+        <Col md={5}>
             <Image src={product.image} alt={product.name}fluid></Image>
         </Col>
         <Col md={3}>

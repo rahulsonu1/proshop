@@ -20,7 +20,7 @@ const HomeScreen = () => {
       <Row>
         {products.map((product)=>
         (<Col sm={12} md={16} lg={4} xl={3}>
-          <Product  product={product}></Product>
+          <Product key={product.id} product={product}></Product>
         </Col>))}
       </Row>
     </>
