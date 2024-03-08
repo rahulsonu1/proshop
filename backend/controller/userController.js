@@ -2,15 +2,18 @@ import asyncHandler from "express-async-handler";
 import User from "../model/user.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../config/generateToken.js";
-import e from "express";
+
 
 const login = asyncHandler(async (req, res) => {
+  
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  if (user && bcrypt.compare(password, user.password)) {
+  const isPasswordSame=await bcrypt.compare(password, user.password)
+  console.log(isPasswordSame)
+  if (user && isPasswordSame) {
     return res.json({
       id: user._id,
-      user: user.name,
+      name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
       token: generateToken(user._id),

@@ -7,6 +7,9 @@ import productRoutes from './routes/product.js'
 import userRoutes from './routes/user.js'
 import errorHandler from './config/errorMiddleware.js'
 
+
+
+app.use(express.json())
 app.use(express.urlencoded())
 app.use('/api/products',productRoutes)
 app.use('/api/user',userRoutes)
