@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation ,useNavigate} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Row,Col,Card,ListGroup,Image,Form,Button,
@@ -13,10 +13,10 @@ const CartScreen = () => {
   const dispatch = useDispatch();
   const params = new URLSearchParams(location.search);
   const qtyFromParams = params.get("qty");
+  const navigate=useNavigate()
 
   const [quantities, setQuantities] = useState({});
   const [subtotal, setSubtotal] = useState(0);
-  const [count,setCount]=useState(0)
 
   const cart = useSelector((state) => state.cartDetail);
   const { cartItems } = cart;
@@ -58,7 +58,7 @@ const CartScreen = () => {
   };
 
   function checkoutHandler() {
-    // Implement your checkout logic here
+    navigate('/login?redirect=/shipping');
   }
 
   return (

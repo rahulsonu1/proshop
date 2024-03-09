@@ -7,5 +7,6 @@ import { protect } from '../config/authMiddleware.js'
 router.post('/login',userController.login)
 router.get('/profile',protect,userController.getUserProfile)
 router.post('/',userController.register)
+router.put('/profile',protect,userController.updateUserProfile)
 
 export default router

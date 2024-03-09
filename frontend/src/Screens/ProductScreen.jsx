@@ -55,6 +55,7 @@ const ProductScreen = () => {
           qty: qty,
         })
       );
+      
     } catch (error) {
       console.error("Error fetching product data:", error);
     }

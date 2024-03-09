@@ -4,6 +4,8 @@ import productDetailSlice from "./productDetail";
 import cartDetailSlice from "./cartDetail";
 import userDetailSlice from "./userDetail";
 import registerSlice from "./register";
+import profileDetailSlice from "./profileDetail";
+import updateProfileSlice from "./updateProfile";
 
 const store = configureStore({
   reducer: {
@@ -11,7 +13,9 @@ const store = configureStore({
     cartDetail: cartDetailSlice.reducer,
     productList: productSlice.reducer,
     userDetail: userDetailSlice.reducer,
-    registerUser:registerSlice.reducer
+    registerUser:registerSlice.reducer,
+    profileDetail:profileDetailSlice.reducer,
+    profileUpdate:updateProfileSlice.reducer,
   },
 });
 
