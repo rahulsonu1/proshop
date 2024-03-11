@@ -1,29 +1,84 @@
-import React, { useState } from "react";
-import { Button, Row, Col, ListGroup, Image, Card, ListGroupItem,} from "react-bootstrap";
-import { useNavigate ,Link} from "react-router-dom";
+import React, { useEffect } from "react";
+import {
+  Button,Row,Col,ListGroup,Image, Card,
+} from "react-bootstrap";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { cartAction } from "../store/cartDetail";
 import CheckoutSteps from "../Component/CheckoutSteps";
 import Message from "../Component/Message";
+import { orderAction } from "../store/orderDetail";
+import axios from 'axios'
 
 const PlaceOrderScreen = () => {
+  const dispatch=useDispatch()
+  const navigate=useNavigate()
   const cart = useSelector((state) => state.cartDetail);
+  const {userInfo}=useSelector((state)=>state.userDetail)
 
-  const itemsPrice=cart.cartItems.reduce((acc,item)=>acc+item.price*item.qty,0)
+  const {order,success,error}=useSelector((state)=>state.orderDetail)
 
-  const shippingPrice=itemsPrice>100?0:100
+  useEffect(()=>{
+     if(success){
+      navigate(`/order/order._id`)
+     }
+  },[success,navigate])
 
-  const taxPrice=Number((0.15*itemsPrice).toFixed(2))
 
-  const totalPrice=(Number(itemsPrice)+Number(shippingPrice)+Number(taxPrice)).toFixed(2)
+  const itemsPrice = cart.cartItems.reduce(
+    (acc, item) => acc + item.price * item.qty,
+    0
+  );
 
-  function placeOrderHandler(){
+  const shippingPrice = itemsPrice > 100 ? 0 : 100;
 
+  const taxPrice = Number((0.15 * itemsPrice).toFixed(2));
+
+  const totalPrice =Number( (
+    Number(itemsPrice) +
+    Number(shippingPrice) +
+    Number(taxPrice)
+  ).toFixed(2));
+
+  function placeOrderHandler(e) {
+    e.preventDefault()
+    orderHandler({
+      orderItems:cart.cartItems,
+      shippingAddress:cart.shippingAddress,
+      paymentMethod:cart.paymentMethod,
+      itemsPrice:itemsPrice,
+      shippingPrice:shippingPrice,
+      taxPrice:taxPrice,
+      totalPrice:totalPrice
+    })
   }
+
+  async function orderHandler(order){
+    try {
+      dispatch(orderAction.orderCreateRequest())
+      const config={
+        headers:{
+          'Content-Type':'application/json',
+          Authorization:`Bearer ${userInfo.token}`
+        }
+      }
+
+      const {data}=await axios.post(`api/order`,order,config)
+      dispatch(orderAction.orderCreateSuccess(data))
+
+    } catch (error) {
+      dispatch(orderAction.orderCreateFail(error.response && error.response.data.message ? error.response.data.message : error.message))
+    }
+  }
+
+
+ 
+
+
 
   return (
     <>
       <CheckoutSteps step1 step2 step3 step4 />
+      {success && <Message>Order Placed </Message>}
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
@@ -59,9 +114,14 @@ const PlaceOrderScreen = () => {
                           />
                         </Col>
                         <Col>
-                          <Link to={`/product/${item.product}`}>{item.name}</Link>
+                          <Link to={`/product/${item.product}`}>
+                            {item.name}
+                          </Link>
                         </Col>
-                        <Col md={4}>{item.qty} x {item.price} = ${(item.qty*item.price).toFixed(2)}</Col>
+                        <Col md={4}>
+                          {item.qty} x {item.price} = $
+                          {(item.qty * item.price).toFixed(2)}
+                        </Col>
                       </Row>
                     </ListGroup.Item>
                   ))}
@@ -101,10 +161,18 @@ const PlaceOrderScreen = () => {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                <Button type="button"className="btn-block" disabled={cart.cartItems===0} onClick={placeOrderHandler}>Place Order</Button>
+                {error && <Message variant='danger'>{error}</Message>}
               </ListGroup.Item>
-              
-
+              <ListGroup.Item>
+                <Button
+                  type="button"
+                  className="btn-block"
+                  disabled={cart.cartItems === 0}
+                  onClick={placeOrderHandler}
+                >
+                  Place Order
+                </Button>
+              </ListGroup.Item>
             </ListGroup>
           </Card>
         </Col>

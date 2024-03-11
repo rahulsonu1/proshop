@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const addressFromLocalStorage=localStorage.getItem('address')?JSON.parse(localStorage.getItem('address')):{}
+const addressFromLocalStorage=localStorage.getItem('shippingAddress')?JSON.parse(localStorage.getItem('shippingAddress')):{}
 
 console.log(addressFromLocalStorage)
 
