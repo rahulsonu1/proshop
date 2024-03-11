@@ -7,6 +7,7 @@ import registerSlice from "./register";
 import profileDetailSlice from "./profileDetail";
 import updateProfileSlice from "./updateProfile";
 import orderDetailSlice from "./orderDetail";
+import orderFindSlice from "./orderFind";
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     profileDetail:profileDetailSlice.reducer,
     profileUpdate:updateProfileSlice.reducer,
     orderDetail:orderDetailSlice.reducer,
+    orderFind:orderFindSlice.reducer
   },
 });
 

@@ -20,7 +20,7 @@ const CartScreen = () => {
 
   const cart = useSelector((state) => state.cartDetail);
   const { cartItems } = cart;
-  localStorage.setItem('cartItems',cartItems)
+
 
 
   useEffect(() => {

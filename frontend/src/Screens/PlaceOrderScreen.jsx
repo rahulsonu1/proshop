@@ -19,7 +19,7 @@ const PlaceOrderScreen = () => {
 
   useEffect(()=>{
      if(success){
-      navigate(`/order/order._id`)
+      navigate(`/order/${order._id}`)
      }
   },[success,navigate])
 
@@ -29,15 +29,16 @@ const PlaceOrderScreen = () => {
     0
   );
 
-  const shippingPrice = itemsPrice > 100 ? 0 : 100;
+  const shippingPrice = Number(itemsPrice) > 100 ? 0 : 100;
 
-  const taxPrice = Number((0.15 * itemsPrice).toFixed(2));
+  const taxPrice = Number((0.15 * Number(itemsPrice)).toFixed(2));
 
-  const totalPrice =Number( (
-    Number(itemsPrice) +
-    Number(shippingPrice) +
-    Number(taxPrice)
-  ).toFixed(2));
+  let totalPrice=Number(Number(taxPrice)+(Number(shippingPrice)+Number(itemsPrice))).toFixed(1)
+
+totalPrice=Number(totalPrice)
+console.log(typeof(totalPrice))
+
+  
 
   function placeOrderHandler(e) {
     e.preventDefault()
@@ -64,6 +65,7 @@ const PlaceOrderScreen = () => {
 
       const {data}=await axios.post(`api/order`,order,config)
       dispatch(orderAction.orderCreateSuccess(data))
+      localStorage.setItem('orderItems',JSON.stringify(data))
 
     } catch (error) {
       dispatch(orderAction.orderCreateFail(error.response && error.response.data.message ? error.response.data.message : error.message))

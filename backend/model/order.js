@@ -6,7 +6,7 @@ const orderSchema=mongoose.Schema({
         required:true,
         ref:'User'
     },
-    orderitems :[{
+    orderItems :[{
         name:{type:String,required:true,},
         qty:{type:Number,required:true,},
         image:{type:String,required:true},
@@ -43,7 +43,7 @@ const orderSchema=mongoose.Schema({
         required:true,
         default:0.0
     },
-    totolPrice:{
+    totalPrice:{
         type:Number,
         required:true,
         default:0.0
