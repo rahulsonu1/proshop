@@ -50,6 +50,9 @@ const cartDetailSlice = createSlice({
     },
     shippingAddressDetail:(state,action)=>{
       return {...state,shippingAddress:action.payload}
+    },
+    savePaymentMethtod:(state,action)=>{
+      return {...state,paymentMethod:action.payload}
     }
   },
 });
