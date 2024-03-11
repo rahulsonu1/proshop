@@ -39,23 +39,23 @@ const ProductScreen = () => {
     fetchProduct();
   }, [dispatch, id]);
 
-  const { product, loading, error } = useSelector(
+  const { product, loading } = useSelector(
     (state) => state.productDetail
   );
   async function addToCartHandler(e) {
     try {
       const { data } = await axios.get(`/api/products/${id}`);
+      const item={
+        product: data._id,
+        name: data.name,
+        image: data.image,
+        price: data.price,
+        countInStock: data.countInStock,
+        qty: qty,
+      }
       dispatch(
-        cartAction.addItem({
-          product: data._id,
-          name: data.name,
-          image: data.image,
-          price: data.price,
-          countInStock: data.countInStock,
-          qty: qty,
-        })
+        cartAction.addItem(item)
       );
-      
     } catch (error) {
       console.error("Error fetching product data:", error);
     }

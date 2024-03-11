@@ -20,6 +20,7 @@ const CartScreen = () => {
 
   const cart = useSelector((state) => state.cartDetail);
   const { cartItems } = cart;
+  localStorage.setItem('cartItems',cartItems)
 
 
   useEffect(() => {
@@ -42,6 +43,7 @@ const CartScreen = () => {
       return acc + (quantities[item.product] || 0) * item.price;
     }, 0);
     setSubtotal(updatedSubtotal);
+  
   
   }, [cartItems, quantities]);
 

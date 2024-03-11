@@ -1,8 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const addressFromLocalStorage=localStorage.getItem('address')?JSON.parse(localStorage.getItem('address')):{}
+
+console.log(addressFromLocalStorage)
+
 const cartDetailSlice = createSlice({
   name: "cartDetail",
-  initialState: { cartItems: [] },
+  initialState: { cartItems: [] ,
+  shippingAddress:addressFromLocalStorage},
   reducers: {
     addItem: (state, action) => {
       const item = action.payload;
@@ -42,6 +47,9 @@ const cartDetailSlice = createSlice({
             ...state,
             cartItems:state.cartItems.filter((x)=>x.product!==action.payload)
         }
+    },
+    shippingAddressDetail:(state,action)=>{
+      return {...state,shippingAddress:action.payload}
     }
   },
 });
