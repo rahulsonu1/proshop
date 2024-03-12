@@ -16,6 +16,9 @@ const profileDetailSlice=createSlice({
         },
         profileFail:(state,action)=>{
             return {loading:false,error:action.payload}
+        },
+        profileReset:(state,action)=>{
+            return {user:{}}
         }
     }
 })

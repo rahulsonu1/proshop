@@ -3,15 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Nav, Navbar, Container, NavDropdown } from "react-bootstrap";
 import { userAction } from "../store/userDetail";
+import { myOrderListAction } from "../store/myOrderList";
+import { profileAction } from "../store/profileDetail";
+
 const Header = () => {
   const userDetail=useSelector(state=>state.userDetail)
   const {userInfo}=userDetail
   const dispatch=useDispatch()
+
   
   
   function logoutHandler(){
     dispatch(userAction.logout())
     localStorage.removeItem("userInfo");
+    dispatch(myOrderListAction.listReset())
+    dispatch(profileAction.profileReset())
+    
   }
 
   return (

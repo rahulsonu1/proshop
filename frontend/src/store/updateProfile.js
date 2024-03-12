@@ -17,7 +17,8 @@ const updateProfileSlice=createSlice({
         },
         updateFail:(state,action)=>{
             return {loading:false,error:action.payload }
-        }
+        },
+        
     }
 })
 

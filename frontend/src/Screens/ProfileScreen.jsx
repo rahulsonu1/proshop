@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {useNavigate } from "react-router-dom";
-import { Form, Button, Row, Col} from "react-bootstrap";
+import { Form, Button, Row, Col,Table} from "react-bootstrap";
+import {LinkContainer} from 'react-router-bootstrap'
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../Component/Message";
 import { profileAction } from "../store/profileDetail";
 import { updateAction } from "../store/updateProfile";
+import { myOrderListAction } from "../store/myOrderList";
+import Loader from '../Component/Loader'
 import axios from 'axios'
 
 const ProfileScreen = () => {
@@ -17,11 +20,11 @@ const ProfileScreen = () => {
   const dispatch=useDispatch()
 
   const {userInfo}=useSelector(state=>state.userDetail)
-
   const {user,error}=useSelector(state=>state.profileDetail)
-  
   const {success}=useSelector(state=>state.profileUpdate )
-  console.log(success)
+
+  const {loading,orders,error:myOrderError}=useSelector((state)=>state.myOrderList)
+  
 
   useEffect(()=>{
     if(!userInfo){
@@ -29,6 +32,7 @@ const ProfileScreen = () => {
     }else{
       if(!user ||!user.name){
         dispatchFunction('profile')
+        listmyOrder()
     }else{
       setName(user.name)
       setEmail(user.email)
@@ -36,6 +40,21 @@ const ProfileScreen = () => {
   }
 },[dispatch,navigate,userInfo,user])
 
+async function listmyOrder(){
+  try {
+    dispatch(myOrderListAction.listReqest())
+    const config={
+      headers:{
+        Authorization:`Bearer ${userInfo.token}`
+      }}
+      const {data}=await axios.get('/api/order/myorders',config)
+      dispatch(myOrderListAction.listSuccess(data))
+
+  } catch (error) {
+    dispatch(myOrderListAction.listFail(error.response && error.response.data.message ? error.response.data.message : error.message))
+    
+  }
+}
 
 async function updateUser(user){
   try {
@@ -47,14 +66,10 @@ async function updateUser(user){
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-
     const {data}=await axios.put(`/api/user/profile`,user,config)
-
     dispatch(updateAction.upateSuccess(data))
-
   } catch (error) {
     dispatch(updateAction.updateFail(error.response && error.response.data.message ? error.response.data.message : error.message))
-    
   }
 }
 
@@ -121,6 +136,36 @@ function submitHandler(e) {
       </Col>
       <Col md={9}>
         <h1>My Orders</h1>
+        {loading?<Loader></Loader>:myOrderError?<Message variant='danger'>{myOrderError}</Message>:(<Table striped bordered hover responsive className="table-sm">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>DATE</th>
+              <th>TOTAL</th>
+              <th>PAID</th>
+              <th>DELIVERED</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order)=>(
+              <tr key={order._id}>
+                <td>{order._id}</td>
+                <td>{order.createdAt.substring(0,10)}</td>
+                <td>{order.totalPrice}</td>
+              <td>{order.isPaid?order.paidAt.substring(0,10):(<i className="fas fa-times" style={{color:'red'}}></i>)}</td>
+              <td>{order.isDelivered?order.deliveredAt.substring(0,10):(<i className="fas fa-times" style={{color:'red'}}></i>)}</td>
+              <td>
+                <LinkContainer to={`/order/${order._id}`}>
+                  <Button className="btn-sm" variant="light">Details</Button>
+
+                </LinkContainer>
+              </td>
+              </tr>
+            ))}
+          </tbody>
+
+        </Table>)}
       </Col>
     </Row>
   );
