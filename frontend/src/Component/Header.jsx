@@ -5,6 +5,7 @@ import { Nav, Navbar, Container, NavDropdown } from "react-bootstrap";
 import { userAction } from "../store/userDetail";
 import { myOrderListAction } from "../store/myOrderList";
 import { profileAction } from "../store/profileDetail";
+import { userListAction } from "../store/userList";
 
 const Header = () => {
   const userDetail=useSelector(state=>state.userDetail)
@@ -18,6 +19,7 @@ const Header = () => {
     localStorage.removeItem("userInfo");
     dispatch(myOrderListAction.listReset())
     dispatch(profileAction.profileReset())
+    dispatch(userListAction.listReset())
     
   }
 
@@ -50,6 +52,19 @@ const Header = () => {
                   <i className="fas fa-user"></i>Login
                 </Nav.Link>
               </LinkContainer>)}
+              {userInfo && userInfo.isAdmin &&(
+                 <NavDropdown title="admin" id='adminmenu'>
+                 <LinkContainer  to="admin/userlist">
+                   <NavDropdown.Item>Users</NavDropdown.Item>
+                 </LinkContainer>
+                 <LinkContainer  to="admin/productlist">
+                   <NavDropdown.Item>Products</NavDropdown.Item>
+                 </LinkContainer>
+                 <LinkContainer  to="admin/orderlist">
+                   <NavDropdown.Item>Orders</NavDropdown.Item>
+                 </LinkContainer>
+               </NavDropdown>
+              )}
               
               
             </Nav>
