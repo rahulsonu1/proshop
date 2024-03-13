@@ -11,6 +11,7 @@ import orderFindSlice from "./orderFind";
 import orderPaySlice from "./orderPay";
 import myorderListSlice from "./myOrderList";
 import userListSlice from "./userList";
+import userDeleteSlice from "./userDelete";
 
 const store = configureStore({
   reducer: {
@@ -25,7 +26,8 @@ const store = configureStore({
     orderFind:orderFindSlice.reducer,
     orderPay:orderPaySlice.reducer,
     myOrderList:myorderListSlice.reducer,
-    userList:userListSlice.reducer
+    userList:userListSlice.reducer,
+    userDelete:userDeleteSlice.reducer
   },
 });
 

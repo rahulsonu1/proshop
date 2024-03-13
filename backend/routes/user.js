@@ -10,6 +10,7 @@ router.post('/',userController.register)
 router.put('/profile',protect,userController.updateUserProfile)
 
 router.get('/',protect,admin,userController.getUser)
+router.delete('/:id',protect,admin,userController.deleteUser)
 
 
 export default router
