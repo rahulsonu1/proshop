@@ -8,6 +8,7 @@ import Loader from "../Component/Loader";
 import { productListAction } from "../store/productList";
 import axios from "axios";
 import { productDeleteAction } from "../store/productDelete";
+import { productCreateAction } from "../store/productCreate";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
@@ -18,14 +19,22 @@ const ProductListScreen = () => {
   const {loading:deleteLoading,error:deleteError,success}=useSelector((state)=>state.productDelete)
  
   const { userInfo } = useSelector((state) => state.userDetail);
+  const {success:createSuccess,product:createdProduct,error:createError,loading:createLoading}=useSelector((state)=>state.productCreate)
 
+  
   useEffect(() => {
+    dispatch(productCreateAction.createReset())
     if (userInfo && userInfo.isAdmin) {
-      fetchProducts()
+     fetchProducts()
     } else {
       navigate("/login");
     }
-  }, [dispatch, userInfo, navigate,success]);
+    if(createSuccess){
+      navigate(`/admin/product/${createdProduct._id}/edit`)
+    }
+
+  }, [dispatch, userInfo, navigate,success,createSuccess]);
+  
 
   const fetchProducts = async () => {
     dispatch(productListAction.productListRequest()); 
@@ -56,8 +65,21 @@ const ProductListScreen = () => {
   };
 
 
-  function createProductHandler(product){
+async  function createProductHandler(e){
+  e.preventDefault()
+  try {
+    dispatch(productCreateAction.createRequest())
+    const config={
+      headers:{
+        Authorization:`Bearer ${userInfo.token}`
+      }
+    }
+    const {data}=await axios.post(`/api/products`,{},config)
+    dispatch(productCreateAction.createSuccess(data))
 
+  } catch (error) {
+    dispatch(productCreateAction.createFail(error.response && error.response.data.message ? error.response.data.message : error.message))
+  }
   }
 
   return (<>
@@ -90,7 +112,7 @@ const ProductListScreen = () => {
                 <td>{product.category}</td>
                 <td>{product.brand}</td>
                 <td>
-                  <LinkContainer to={`/admin/proudct/${product._id}/edit`}>
+                  <LinkContainer to={`/admin/product/${product._id}/edit`}>
                     <Button variant="light" className="btn-sm">
                       <i className="fas fa-edit"></i>
                     </Button>

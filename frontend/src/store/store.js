@@ -13,6 +13,9 @@ import myorderListSlice from "./myOrderList";
 import userListSlice from "./userList";
 import userDeleteSlice from "./userDelete";
 import productDeleteSlice from "./productDelete";
+import productCreateSlice from "./productCreate";
+import productUpdateSlice from "./productUpdate";
+
 
 
 const store = configureStore({
@@ -30,7 +33,10 @@ const store = configureStore({
     myOrderList:myorderListSlice.reducer,
     userList:userListSlice.reducer,
     userDelete:userDeleteSlice.reducer,
-    productDelete:productDeleteSlice.reducer
+    productDelete:productDeleteSlice.reducer,
+    productCreate:productCreateSlice.reducer,
+    productUpdate:productUpdateSlice.reducer
+
   },
 });
 

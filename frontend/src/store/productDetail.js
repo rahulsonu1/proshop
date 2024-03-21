@@ -4,7 +4,7 @@ const productDetailSlice = createSlice({
     name: 'productDetail',
     initialState: {
      product:{
-        reviews:[]
+        
      },
      loading:true,
      error:''
