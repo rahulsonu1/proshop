@@ -12,5 +12,8 @@ router.put('/profile',protect,userController.updateUserProfile)
 router.get('/',protect,admin,userController.getUser)
 router.delete('/:id',protect,admin,userController.deleteUser)
 
+router.get('/:id',protect,admin,userController.getUserById)
+router.put('/:id',protect,admin,userController.updateUser)
+
 
 export default router

@@ -5,7 +5,7 @@ const productSlice = createSlice({
     initialState: {
      products:[],
      error:'',
-     loading:true
+     loading:true,
     },
     reducers: {
       productListRequest:(state,action)=>{
@@ -17,7 +17,6 @@ const productSlice = createSlice({
       productListFail:(state,action)=>{
         return {loading:false,error:action.payload}
       }
-
     }
 })
 
