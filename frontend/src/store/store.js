@@ -15,6 +15,8 @@ import userDeleteSlice from "./userDelete";
 import productDeleteSlice from "./productDelete";
 import productCreateSlice from "./productCreate";
 import productUpdateSlice from "./productUpdate";
+import orderListSlice from "./orderList";
+import orderDeliverSlice from "./orderDeliver";
 
 
 
@@ -35,7 +37,9 @@ const store = configureStore({
     userDelete:userDeleteSlice.reducer,
     productDelete:productDeleteSlice.reducer,
     productCreate:productCreateSlice.reducer,
-    productUpdate:productUpdateSlice.reducer
+    productUpdate:productUpdateSlice.reducer,
+    orderList:orderListSlice.reducer,
+    orderDeliver:orderDeliverSlice.reducer
 
   },
 });

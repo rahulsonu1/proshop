@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Component/Loader";
 import Message from "../Component/Message";
 import { orderFindAction } from "../store/orderFind";
+import { deliverAction } from "../store/orderDeliver";
 import axios from "axios";
 
 const OrderScreen = () => {
@@ -12,34 +13,56 @@ const OrderScreen = () => {
   const { id } = useParams();
   const { userInfo } = useSelector((state) => state.userDetail);
   const { loading, error, order } = useSelector((state) => state.orderFind);
+  const {loading:deliverLoading,success:deliverSuccess,error:deliverError}=useSelector((state)=>state.orderDeliver)
 
  
 
   useEffect(() => {
-    const fetchOrder = async () => {
-      try {
-        dispatch(orderFindAction.orderFindRequest());
-        const config = {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        };
-        const { data } = await axios.get(`/api/order/${id}`, config);
-        dispatch(orderFindAction.orderFindSuccess(data));
-      } catch (error) {
-        dispatch(
-          orderFindAction.orderFindFail(
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message
-          )
-        );
-      }
-    };
-    fetchOrder();
-  }, [dispatch,id]);
+    if(!order || deliverSuccess){
+      fetchOrder();
+      dispatch(deliverAction.deliverReset())
+    }
+    
+  }, [dispatch,id,order,deliverSuccess]);
 
- 
+  const fetchOrder = async () => {
+    try {
+      dispatch(orderFindAction.orderFindRequest());
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const { data } = await axios.get(`/api/order/${id}`, config);
+      dispatch(orderFindAction.orderFindSuccess(data));
+    } catch (error) {
+      dispatch(
+        orderFindAction.orderFindFail(
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+        )
+      );
+    }
+  };
+
+  const deliverHandler=async (e)=>{
+    e.preventDefault()
+    try {
+      dispatch(deliverAction.deliverRequest())
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+     const {data}=await axios.put(`/api/order/${order.id}/deliver`,{},config)
+     dispatch(deliverAction.deliverSuccess(data))
+    } catch (error) {
+      dispatch(deliverAction.deliverFail(error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message))
+    }
+  }
 
   return (
     <>
@@ -119,7 +142,7 @@ const OrderScreen = () => {
                   <ListGroup.Item>
                     <Row>
                       <Col>Items</Col>
-                      <Col>${order.itemsPrice}</Col>
+                      <Col>${order.totalPrice-order.taxPrice-order.shippingPrice}</Col>
                     </Row>
                   </ListGroup.Item>
                   <ListGroup.Item>
@@ -140,6 +163,11 @@ const OrderScreen = () => {
                       <Col>${order.totalPrice}</Col>
                     </Row>
                   </ListGroup.Item>
+                  {userInfo &&userInfo.isAdmin && order.isPaid && !order.isDelivered &&(
+                    <ListGroup.Item>
+                      <Button type='button' className="btn btn-block" onClick={deliverHandler}>Mark as Delivered</Button>
+                    </ListGroup.Item>
+                  )}
                 </ListGroup>
               </Card>
             </Col>

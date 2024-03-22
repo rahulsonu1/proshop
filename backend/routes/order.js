@@ -1,6 +1,6 @@
 import express from 'express'
 const router=express.Router()
-import { protect } from '../config/authMiddleware.js'
+import { protect,admin } from '../config/authMiddleware.js'
 
 import orderController from '../controller/orderController.js'
 
@@ -11,7 +11,8 @@ router.get('/:id',protect,orderController.getOrderById)
 // router.put('/:id/pay',protect,orderController.updateOrderTOPaid)
 
 router.get('/myorders',protect,orderController.getMyOrder)
-
+router.get('/',protect,admin,orderController.getOrders)
+router.put('/:id/deliver',protect,admin,orderController.updateOrderToDelivered)
 
 
 
