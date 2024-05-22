@@ -51,10 +51,10 @@ const UserListScreen = () => {
       dispatch(userDeleteAction.deleteRequest())
       const config = {
         headers: {
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer 	${userInfo.token}`,
         },
       };
-      await axios.delete(`/api/user/${id}`,config)
+      await axios.delete(`/api/user/	${id}`,config)
       dispatch(userDeleteAction.deleteSuccess())
     } catch (error) {
       dispatch(userDeleteAction.deleteFail(error.response && error.response.data.message ? error.response.data.message : error.message))
@@ -79,10 +79,10 @@ const UserListScreen = () => {
             <tr key={user._id}>
                 <td>{user._id}</td>
                 <td>{user.name}</td>
-                <td><a href={`mailto:${user.email}`}>{user.email}</a></td>
+                <td><a href={`mailto:	${user.email}`}>{user.email}</a></td>
                 <td>{user.isAdmin?(<i className="fas fa-check" style={{color:'green'}}></i>):(<i className="fas fa-times" style={{color:'red'}}></i>)}</td>
                 <td>
-                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
+                  <LinkContainer to={`/admin/user/	${user._id}/edit`}>
                     <Button variant="light" className="btn-sm">
                       <i className="fas fa-edit"></i>
                     </Button>

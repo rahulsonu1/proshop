@@ -1,175 +1,44 @@
-// import React, { useState, useEffect } from "react";
-// import { Link, useParams, useNavigate } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
-// import { productDetailAction } from "../store/productDetail";
-
-// import {
-//   Row,Col,Image,ListGroup,Card,Button,ListGroupItem,Form,
-// } from "react-bootstrap";
-// import Rating from "../Component/Rating";
-// import axios from "axios";
-// import Loader from "../Component/Loader";
-// import { cartAction } from "../store/cartDetail";
-
-// const ProductScreen = () => {
-//   const [qty, setQty] = useState(1);
-//   const navigate = useNavigate();
-//   const { id } = useParams();
-//   const dispatch = useDispatch();
-
-//   useEffect(() => {
-//     const fetchProduct = async () => {
-//       dispatch(productDetailAction.productDetailRequest());
-//       try {
-//         const { data } = await axios.get(`/api/products/${id}`);
-//         dispatch(productDetailAction.productDetailSuccess(data));
-//       } catch (error) {
-//         dispatch(productDetailAction.productDetailFail(error.message));
-//       }
-//     };
-
-//     fetchProduct();
-//   }, [dispatch, id]);
-
-//   const { product, loading } = useSelector((state) => state.productDetail);
-//   async function addToCartHandler(e) {
-//     try {
-//       const { data } = await axios.get(`/api/products/${id}`);
-//       const item = {
-//         product: data._id,
-//         name: data.name,
-//         image: data.image,
-//         price: data.price,
-//         countInStock: data.countInStock,
-//         qty: qty,
-//       };
-//       dispatch(cartAction.addItem(item));
-//       localStorage.setItem('cartItems',JSON.stringify(item))
-//     } catch (error) {
-//       console.error("Error fetching product data:", error);
-//     }
-    
-//     navigate(`/cart/${id}?qty=${qty}`);
-//   }
-
-//   return (
-//     <>
-//       <Link className="btn btn-primary my-3" to="/">
-//         Go Back
-//       </Link>
-//       {loading ? (
-//         <Loader></Loader>
-//       ) : (
-//         <Row>
-//           <Col md={5}>
-//             <Image src={product.image} alt={product.name} fluid></Image>
-//           </Col>
-//           <Col md={3}>
-//             <ListGroup variant="flush">
-//               <ListGroup.Item>
-//                 <h3>{product.name}</h3>
-//               </ListGroup.Item>
-//               <ListGroupItem>
-//                 <Rating
-//                   value={product.rating}
-//                   text={`${product.numReviews}reviews`}
-//                 ></Rating>
-//               </ListGroupItem>
-//               <ListGroupItem>Price:${product.price}</ListGroupItem>
-//               <ListGroupItem>Description:{product.description}</ListGroupItem>
-//             </ListGroup>
-//           </Col>
-//           <Col md={3}>
-//             <Card>
-//               <ListGroup variant="flush">
-//                 <ListGroup.Item>
-//                   <Row>
-//                     <Col>Price:</Col>
-//                     <Col>
-//                       <strong>${product.price}</strong>
-//                     </Col>
-//                   </Row>
-//                 </ListGroup.Item>
-//                 <ListGroup.Item>
-//                   <Row>
-//                     <Col>Status:</Col>
-//                     <Col>
-//                       {product.countInStock > 0 ? "In Stock" : "Out Of Stock"}
-//                     </Col>
-//                   </Row>
-//                 </ListGroup.Item>
-//                 {product.countInStock > 0 && (
-//                   <ListGroup.Item>
-//                     <Row>
-//                       <Col>Qty</Col>
-//                       <Col>
-//                         <Form.Control
-//                           as="select"
-//                           value={qty}
-//                           onChange={(e) => setQty(e.target.value)}
-//                         >
-//                           {[...Array(product.countInStock).keys()].map((x) => (
-//                             <option key={x + 1} value={x + 1}>
-//                               {x + 1}
-//                             </option>
-//                           ))}
-//                         </Form.Control>
-//                       </Col>
-//                     </Row>
-//                   </ListGroup.Item>
-//                 )}
-//                 <ListGroup.Item>
-//                   <Button
-//                     className="btn-block"
-//                     type="button"
-//                     disabled={product.countInStock === 0}
-//                     onClick={addToCartHandler}
-//                   >
-//                     Add To Cart
-//                   </Button>
-//                 </ListGroup.Item>
-//               </ListGroup>
-//             </Card>
-//           </Col>
-//         </Row>
-//       )}
-//     </>
-//   );
-// };
-
-// export default ProductScreen;
 
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { productDetailAction } from "../store/productDetail";
-
+import { productDetailAction} from "../store/productDetail";
+import {createReviewAction} from '../store/productReview'
+import Message from '../Component/Message'
 import {
-  Row,
-  Col,
-  Image,
-  ListGroup,
-  Card,
-  Button,
-  ListGroupItem,
-  Form,
+  Row,Col,Image,ListGroup,Card,Button,ListGroupItem,Form,
 } from "react-bootstrap";
 import Rating from "../Component/Rating";
 import axios from "axios";
 import Loader from "../Component/Loader";
 import { cartAction } from "../store/cartDetail";
 
+
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
   const navigate = useNavigate();
+  const [rating,setRating]=useState(1)
+  const [comment,setComment]=useState('')
   const { id } = useParams();
   const dispatch = useDispatch();
 
+  const {userInfo}=useSelector((state)=>state.userDetail)
+
+  const { product, loading } = useSelector((state) => state.productDetail);
+  
+  const {success:successReviews,error:reviewsError}=useSelector((state)=>state.createReview)
+
   useEffect(() => {
+    if(successReviews){
+      alert('Review Submitted!')
+      setRating(0)
+      setComment('')
+      dispatch(createReviewAction.createReset())
+    }
     const fetchProduct = async () => {
       dispatch(productDetailAction.productDetailRequest());
       try {
-        const { data } = await axios.get(`/api/products/${id}`);
+        const { data } = await axios.get(`/api/products/	${id}`);
         dispatch(productDetailAction.productDetailSuccess(data));
       } catch (error) {
         dispatch(productDetailAction.productDetailFail(error.message));
@@ -177,13 +46,14 @@ const ProductScreen = () => {
     };
 
     fetchProduct();
-  }, [dispatch, id]);
+  }, [dispatch, id,successReviews]);
 
-  const { product, loading } = useSelector((state) => state.productDetail);
+  
+ 
 
   async function addToCartHandler(e) {
     try {
-      const { data } = await axios.get(`/api/products/${id}`);
+      const { data } = await axios.get(`/api/products/	${id}`);
       const item = {
         product: data._id,
         name: data.name,
@@ -198,8 +68,35 @@ const ProductScreen = () => {
       console.error("Error fetching product data:", error);
     }
 
-    navigate(`/cart/${id}?qty=${qty}`);
+    navigate(`/cart/	${id}?qty=	${qty}`);
   }
+
+
+  function submitHandler(e){
+    e.preventDefault()
+    async function createReviews(id,reviews){
+     try {
+      dispatch(createReviewAction.createRequest())
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.post(`/api/products/${id}/reviews`,reviews,config)
+
+      dispatch(createReviewAction.createSuccess())
+     } catch (error) {
+      dispatch(createReviewAction.createFail(error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message))
+     }
+    }
+    createReviews(id,{comment,rating})
+  }
+   
 
   return (
     <>
@@ -209,6 +106,7 @@ const ProductScreen = () => {
       {loading ? (
         <Loader></Loader>
       ) : (
+        <>
         <Row>
           <Col md={5}>
             <div style={{ height: "300px", overflow: "hidden" }}>
@@ -223,10 +121,10 @@ const ProductScreen = () => {
               <ListGroupItem>
                 <Rating
                   value={product.rating}
-                  text={`${product.numReviews}reviews`}
+                  text={`	${product.numReviews}reviews`}
                 ></Rating>
               </ListGroupItem>
-              <ListGroupItem>Price:${product.price}</ListGroupItem>
+              <ListGroupItem>Price:	${product.price}</ListGroupItem>
               <ListGroupItem>
                 Description:{product.description}
               </ListGroupItem>
@@ -239,7 +137,7 @@ const ProductScreen = () => {
                   <Row>
                     <Col>Price:</Col>
                     <Col>
-                      <strong>${product.price}</strong>
+                      <strong>	${product.price}</strong>
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -287,6 +185,46 @@ const ProductScreen = () => {
             </Card>
           </Col>
         </Row>
+        <Row>
+          <Col md={6}>
+            <h2>Reviews</h2>
+            {product.reviews.length===0 && <Message>No Reviews</Message>}
+            <ListGroup variant="flush">
+              {product.reviews.map((review)=>(
+                <ListGroup.Item key={review._id}>
+                  <strong>{review.name}</strong>
+                  <Rating value={review.rating}/>
+                  <p>{review.createdAt.substring(0,10)}</p>
+                  <p>{review.comment}</p>
+                </ListGroup.Item>
+              ))}
+              <ListGroup.Item>
+                <h2>Write a Customer Review</h2>
+                {reviewsError && <Message variant='danger'>{reviewsError}</Message>}
+                {userInfo?(<Form onSubmit={submitHandler}>
+                  <Form.Group controlId="rating">
+                    <Form.Label>Rating</Form.Label>
+                    <Form.Control as='select' value={rating} onChange={(e)=> setRating(e.target.value)}>
+                      {/* <option value="0">Select...</option> */}
+                      <option value="1">1 - Poor</option>
+                      <option value="2">2 - Fair</option>
+                      <option value="3">3 - Good</option>
+                      <option value="4">4 - Very Good</option>
+                      <option value="5">5 - Excellant</option>
+
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="comment">
+                    <Form.Label>Comment</Form.Label>
+                    <Form.Control as='textarea' row='3' onChange={(e)=> setComment(e.target.value)}></Form.Control>
+                  </Form.Group>
+                  <Button type='submit' variant="primary">submit</Button>
+                </Form>):<Message>Please <Link to='/login'>sign in</Link>to write a review</Message>}
+              </ListGroup.Item>
+            </ListGroup>
+          </Col>
+        </Row>
+      </>
       )}
     </>
   );

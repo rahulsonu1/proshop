@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Nav, Navbar, Container, NavDropdown } from "react-bootstrap";
+import SearchBox from "./SearchBox";
 import { userAction } from "../store/userDetail";
 import { myOrderListAction } from "../store/myOrderList";
 import { profileAction } from "../store/profileDetail";
@@ -28,7 +29,7 @@ const Header = () => {
       <Navbar expand="lg" bg="dark" variant="dark">
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>NetMart</Navbar.Brand>
+            <Navbar.Brand>		NetMart</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
@@ -68,6 +69,7 @@ const Header = () => {
               
               
             </Nav>
+            {/* <SearchBox></SearchBox> */}
           </Navbar.Collapse>
         </Container>
       </Navbar>

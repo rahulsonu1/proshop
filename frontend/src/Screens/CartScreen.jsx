@@ -80,9 +80,9 @@ const CartScreen = () => {
                     <Image src={item.image} alt={item.name} fluid rounded />
                   </Col>
                   <Col md={3}>
-                    <Link to={`/product/${item.product}`}>{item.name}</Link>
+                    <Link to={`/product/	${item.product}`}>{item.name}</Link>
                   </Col>
-                  <Col md={2}>${item.price}</Col>
+                  <Col md={2}>	${item.price}</Col>
                   <Col>
                     <Form.Control
                       as="select"
@@ -121,7 +121,7 @@ const CartScreen = () => {
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Subtotal : {cartItems.reduce((acc, item) => acc + Number(item.qty), 0)}</h2>
-              ${subtotal.toFixed(2)}
+              	${subtotal.toFixed(2)}
             </ListGroup.Item>
           </ListGroup>
           <ListGroup.Item>

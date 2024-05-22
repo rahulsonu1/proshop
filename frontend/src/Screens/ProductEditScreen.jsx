@@ -55,7 +55,7 @@ const ProductEditScreen = () => {
   const fetchProduct = async () => {
     dispatch(productDetailAction.productDetailRequest());
     try {
-      const { data } = await axios.get(`/api/products/${id}`);
+      const { data } = await axios.get(`/api/products/	${id}`);
       dispatch(productDetailAction.productDetailSuccess(data));
     } catch (error) {
       dispatch(productDetailAction.productDetailFail(error.message));
@@ -72,7 +72,7 @@ const ProductEditScreen = () => {
         },
       };
       const { data } = await axios.put(
-        `/api/products/${id}`,
+        `/api/products/	${id}`,
         { id, name, price, image, brand, category, countInStock, description },
         config
       );

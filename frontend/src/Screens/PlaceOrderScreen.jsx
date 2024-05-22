@@ -19,7 +19,7 @@ const PlaceOrderScreen = () => {
 
   useEffect(()=>{
      if(success){
-      navigate(`/order/${order._id}`)
+      navigate(`/order/	${order._id}`)
      }
   },[success,navigate])
 
@@ -116,12 +116,12 @@ console.log(typeof(totalPrice))
                           />
                         </Col>
                         <Col>
-                          <Link to={`/product/${item.product}`}>
+                          <Link to={`/product/	${item.product}`}>
                             {item.name}
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x {item.price} = $
+                          {item.qty} x {item.price} = 	$
                           {(item.qty * item.price).toFixed(2)}
                         </Col>
                       </Row>
@@ -141,25 +141,25 @@ console.log(typeof(totalPrice))
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>${itemsPrice}</Col>
+                  <Col>	${itemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>${shippingPrice}</Col>
+                  <Col>	${shippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
-                  <Col>${taxPrice}</Col>
+                  <Col>	${taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total Price</Col>
-                  <Col>${totalPrice}</Col>
+                  <Col>	${totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>

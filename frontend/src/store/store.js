@@ -17,6 +17,8 @@ import productCreateSlice from "./productCreate";
 import productUpdateSlice from "./productUpdate";
 import orderListSlice from "./orderList";
 import orderDeliverSlice from "./orderDeliver";
+import createReviewSlice from "./productReview";
+
 
 
 
@@ -39,7 +41,8 @@ const store = configureStore({
     productCreate:productCreateSlice.reducer,
     productUpdate:productUpdateSlice.reducer,
     orderList:orderListSlice.reducer,
-    orderDeliver:orderDeliverSlice.reducer
+    orderDeliver:orderDeliverSlice.reducer,
+    createReview:createReviewSlice.reducer
 
   },
 });

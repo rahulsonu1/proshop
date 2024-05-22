@@ -36,7 +36,7 @@ const UserEditScreen = () => {
           Authorization:`Bearer ${userInfo.token}`
         }
       }
-      const {data}=await axios.get(`/api/user/${id}`,config)
+      const {data}=await axios.get(`/api/user/	${id}`,config)
   
       dispatch(profileAction.profileSuccess(data))
       

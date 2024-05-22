@@ -88,7 +88,7 @@ async function handleDispatch(){
       </Form>
       <Row className="py-3">
         <Col>
-        Have a account?<Link to={redirect?`/login?redirect=${redirect}`:'/login'}>Login</Link>
+        Have a account?<Link to={redirect?`/login?redirect=	${redirect}`:'/login'}>Login</Link>
         </Col>
       </Row>
     </FormContainer>

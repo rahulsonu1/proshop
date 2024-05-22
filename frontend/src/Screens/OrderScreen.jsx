@@ -33,7 +33,7 @@ const OrderScreen = () => {
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      const { data } = await axios.get(`/api/order/${id}`, config);
+      const { data } = await axios.get(`/api/order/	${id}`, config);
       dispatch(orderFindAction.orderFindSuccess(data));
     } catch (error) {
       dispatch(
@@ -52,10 +52,10 @@ const OrderScreen = () => {
       dispatch(deliverAction.deliverRequest())
       const config = {
         headers: {
-          Authorization: `Bearer ${userInfo.token}`,
+          horization: `Bearer ${userInfo.token}`,
         },
       };
-     const {data}=await axios.put(`/api/order/${order.id}/deliver`,{},config)
+     const {data}=await axios.put(`/api/order/	${order.id}/deliver`,{},config)
      dispatch(deliverAction.deliverSuccess(data))
     } catch (error) {
       dispatch(deliverAction.deliverFail(error.response && error.response.data.message
@@ -80,7 +80,7 @@ const OrderScreen = () => {
                   <h2>Shipping</h2>
                  <p><strong>Name :  </strong>{order.user.name}</p> 
                  
-                 <p><strong>Email : </strong><a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+                 <p><strong>Email : </strong><a href={`mailto:	${order.user.email}`}>{order.user.email}</a>
                   <p>
                   </p> 
                     <strong>Address:</strong>
@@ -117,12 +117,12 @@ const OrderScreen = () => {
                               />
                             </Col>
                             <Col>
-                              <Link to={`/product/${item.product}`}>
+                              <Link to={`/product/	${item.product}`}>
                                 {item.name}
                               </Link>
                             </Col>
                             <Col md={4}>
-                              {item.qty} x {item.price} = $
+                              {item.qty} x {item.price} = 	$
                               {(item.qty * item.price).toFixed(2)}
                             </Col>
                           </Row>
@@ -142,25 +142,25 @@ const OrderScreen = () => {
                   <ListGroup.Item>
                     <Row>
                       <Col>Items</Col>
-                      <Col>${order.totalPrice-order.taxPrice-order.shippingPrice}</Col>
+                      <Col>	${order.totalPrice-order.taxPrice-order.shippingPrice}</Col>
                     </Row>
                   </ListGroup.Item>
                   <ListGroup.Item>
                     <Row>
                       <Col>Shipping</Col>
-                      <Col>${order.shippingPrice}</Col>
+                      <Col>	${order.shippingPrice}</Col>
                     </Row>
                   </ListGroup.Item>
                   <ListGroup.Item>
                     <Row>
                       <Col>Tax</Col>
-                      <Col>${order.taxPrice}</Col>
+                      <Col>	${order.taxPrice}</Col>
                     </Row>
                   </ListGroup.Item>
                   <ListGroup.Item>
                     <Row>
                       <Col>Total Price</Col>
-                      <Col>${order.totalPrice}</Col>
+                      <Col>	${order.totalPrice}</Col>
                     </Row>
                   </ListGroup.Item>
                   {userInfo &&userInfo.isAdmin && order.isPaid && !order.isDelivered &&(

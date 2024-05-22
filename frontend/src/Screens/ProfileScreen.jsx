@@ -39,7 +39,7 @@ const ProfileScreen = () => {
   }
 },[dispatch,navigate,userInfo,user])
 
-
+console.log(userInfo)
 
 
 
@@ -88,7 +88,7 @@ async function dispatchFunction(id){
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-    const {data}=await axios.get(`/api/user/${id}`,config)
+    const {data}=await axios.get(`/api/user/	${id}`,config)
 
     dispatch(profileAction.profileSuccess(data))
     
@@ -161,7 +161,7 @@ function submitHandler(e) {
               <td>{order.isPaid?order.paidAt.substring(0,10):(<i className="fas fa-times" style={{color:'red'}}></i>)}</td>
               <td>{order.isDelivered?order.deliveredAt.substring(0,10):(<i className="fas fa-times" style={{color:'red'}}></i>)}</td>
               <td>
-                <LinkContainer to={`/order/${order._id}`}>
+                <LinkContainer to={`/order/	${order._id}`}>
                   <Button className="btn-sm" variant="light">Details</Button>
 
                 </LinkContainer>

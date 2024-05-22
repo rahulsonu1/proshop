@@ -30,7 +30,7 @@ const ProductListScreen = () => {
       navigate("/login");
     }
     if(createSuccess){
-      navigate(`/admin/product/${createdProduct._id}/edit`)
+      navigate(`/admin/product/	${createdProduct._id}/edit`)
     }
 
   }, [dispatch, userInfo, navigate,success,createSuccess]);
@@ -55,7 +55,7 @@ const ProductListScreen = () => {
         }
       }
 
-      await axios.delete(`/api/products/${id}`,config)
+      await axios.delete(`/api/products/	${id}`,config)
       dispatch(productDeleteAction.deleteSuccess())
 
 
@@ -108,11 +108,11 @@ async  function createProductHandler(e){
             <tr key={product._id}>
                 <td>{product._id}</td>
                 <td>{product.name}</td>
-                <td>${product.price}</td>
+                <td>	${product.price}</td>
                 <td>{product.category}</td>
                 <td>{product.brand}</td>
                 <td>
-                  <LinkContainer to={`/admin/product/${product._id}/edit`}>
+                  <LinkContainer to={`/admin/product/	${product._id}/edit`}>
                     <Button variant="light" className="btn-sm">
                       <i className="fas fa-edit"></i>
                     </Button>
