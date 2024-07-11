@@ -3,8 +3,14 @@ import Product from '../model/product.js'
 
 
 const getProduct= asyncHandler( async(req,res)=>{
-   const products=await Product.find()
-   return res.json(products)
+    const keyword=req.query.keyword ?{
+        name:{
+            $regex:req.query.keyword,
+            $options:'i'
+        }
+    }:{}
+    const products=await Product.find({...keyword})
+    res.json(products)
 })
 
 const getProductById=asyncHandler(async function(req,res){
@@ -90,8 +96,14 @@ const createProductReview=asyncHandler(async(req,res)=>{
     }
 })
 
+const getTopProducts=asyncHandler(async (req,res)=>{
+    const products=await Product.find()
+    .sort({rating:-1}).limit(3)
+    res.json(products)
+})
 
 
-export default {getProduct,getProductById,deleteProduct,createProduct,updateProduct,createProductReview}
+
+export default {getProduct,getProductById,deleteProduct,createProduct,updateProduct,createProductReview,getTopProducts}
 
 

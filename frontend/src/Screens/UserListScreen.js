@@ -51,7 +51,7 @@ const UserListScreen = () => {
       dispatch(userDeleteAction.deleteRequest())
       const config = {
         headers: {
-          Authorization: `Bearer 	${userInfo.token}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
       };
       await axios.delete(`/api/user/	${id}`,config)
