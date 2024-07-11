@@ -34,7 +34,7 @@ app.use(express.json())
 
 
 
-const port= 7000
+const port=7000
 app.listen(port,function(err){
     if(err){console.log("Error in running server")}
     console.log(`Server is running at port : ${port}`)
