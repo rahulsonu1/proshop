@@ -1,9 +1,10 @@
-import express from 'express'
 import dotenv from 'dotenv'
+import path from 'path'
 dotenv.config()
+import express from 'express'
 const app=express()
 import db from './config/mongoose.js'
-import path from 'path'
+
 
 
 
@@ -12,6 +13,7 @@ import userRoutes from './routes/user.js'
 import orderRoutes from './routes/order.js'
 import uploadRoutes from './routes/upload.js'
 import errorHandler from './config/errorMiddleware.js'
+
 
 
 app.use(express.json())
@@ -32,7 +34,7 @@ app.use(express.json())
 
 
 
-const port=7000
+const port= 7000
 app.listen(port,function(err){
     if(err){console.log("Error in running server")}
     console.log(`Server is running at port : ${port}`)

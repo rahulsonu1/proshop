@@ -1,5 +1,9 @@
 import mongoose from "mongoose"
- mongoose.connect('mongodb://localhost/ProShop')
+import dotenv from 'dotenv'
+dotenv.config()
+
+const url=process.env.MongoURL
+ mongoose.connect(url)
 
  const db=mongoose.connection  
 

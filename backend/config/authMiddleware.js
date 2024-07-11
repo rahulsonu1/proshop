@@ -3,7 +3,6 @@ import User from '../model/user.js'
 import asyncHandler from 'express-async-handler'
 
 
-console.log(process.env.JWT_SECRET)
 
 const protect= asyncHandler(async(req,res,next)=>{
     let token
